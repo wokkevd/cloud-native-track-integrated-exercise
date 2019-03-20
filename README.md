@@ -21,13 +21,16 @@ point)
 3. put some config/secrets in configmaps/secrets (an easy target is background 
 color)
 
-4. everything should be deployable using a *single* YAML:
+4. Do not forget about resource requests and limits and of course liveness and 
+readiness checks!
+
+5. everything should be deployable using a *single* YAML:
 
 ```
 oc apply -f your_yaml_file.yaml
 ```
 
-5. any changes pushed to your GitHub repository should trigger a new build and 
+6. any changes pushed to your GitHub repository should trigger a new build and 
 deploy
 
 Once you are ready, post the link to you fork in the Slack channel so everybody 
