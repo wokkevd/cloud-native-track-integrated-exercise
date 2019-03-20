@@ -14,12 +14,14 @@ there are only a couple of requirements:
 1. you will need to write your own Dockerfile (obviously according to all best 
 practices and with a minimal size)
 
-2. application is not the focus, should be a very simple "hello world" (but some 
-dynamic configuration should be possible, see next point)
+2. the application (Java) is not the focus, it can be a very simple 
+"hello world" (but some dynamic configuration should be possible, see next 
+point)
 
-3. put some config/secrets in configmaps/secrets
+3. put some config/secrets in configmaps/secrets (an easy target is background 
+color)
 
-4. everything should be deployable using a single YAML:
+4. everything should be deployable using a *single* YAML:
 
 ```
 oc apply -f your_yaml_file.yaml
