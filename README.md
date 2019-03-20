@@ -8,8 +8,8 @@ you might have to do some Googling yourself as well.
 
 ## Exercise
 
-Fork this repo, and put all your code in there.  This is very open exercise, 
-there are only a couple of requirements:
+Fork this repo, and put all your code in there.  This is very broad/loosly 
+defined exercise, there are only a couple of requirements:
 
 1. you will need to write your own `Dockerfile` (obviously according to all best 
 practices and with a minimal size)
