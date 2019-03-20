@@ -11,7 +11,7 @@ you might have to do some Googling yourself as well.
 Fork this repo, and put all your code in there.  This is very open exercise, 
 there are only a couple of requirements:
 
-1. you will need to write your own Dockerfile (obviously according to all best 
+1. you will need to write your own `Dockerfile` (obviously according to all best 
 practices and with a minimal size)
 
 2. the application (Java) is not the focus, it can be a very simple 
