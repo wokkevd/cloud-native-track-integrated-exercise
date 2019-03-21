@@ -1,0 +1,125 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  app: integrated-hello
+  template: integrated-hello
+metadata:
+  annotations:
+    openshift.io/display-name: Integrated Hello App Server
+    openshift.io/provider-display-name: WokkeVD, Inc.
+    tags: integrated,hello
+    template.openshift.io/bindable: "false"
+  creationTimestamp: 2019-03-21T11:12:44Z
+  name: integrated-hello
+  namespace: test-user07
+  resourceVersion: "1903"
+objects:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        description: Exposes application pods
+      name: integrated-hello
+    spec:
+      ports:
+        - name: web
+          port: 8080
+          targetPort: 8080
+      selector:
+        name: integrated-hello
+  - apiVersion: v1
+    kind: Route
+    metadata:
+      name: integrated-hello
+    spec:
+      to:
+        kind: Service
+        name: integrated-hello
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      annotations:
+        description: Keeps track of changes in the application image
+      name: integrated-hello
+  - apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      annotations:
+        description: Defines how to build the application
+        template.alpha.openshift.io/wait-for-ready: "true"
+      name: integrated-hello
+    spec:
+      output:
+        to:
+          kind: ImageStreamTag
+          name: integrated-hello:latest
+      source:
+        git:
+          uri: https://github.com/wokkevd/cloud-native-track-integrated-exercise.git
+        type: Git
+      strategy:
+        sourceStrategy:
+          from:
+            kind: ImageStreamTag
+            name: httpd:2.4
+            namespace: test-user07
+        type: Source
+      triggers:
+        - type: ImageChange
+        - type: ConfigChange
+        - github:
+            secret: verySecret
+          type: GitHub
+        - generic:
+            secret: verySecret
+          type: Generic
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      annotations:
+        description: Defines how to deploy the application server
+        template.alpha.openshift.io/wait-for-ready: "true"
+      name: integrated-hello
+    spec:
+      replicas: 1
+      selector:
+        name: integrated-hello
+      strategy:
+        type: Rolling
+      template:
+        metadata:
+          labels:
+            name: integrated-hello
+          name: integrated-hello
+        spec:
+          containers:
+            - env: []
+              image: ' '
+              livenessProbe:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 30
+                timeoutSeconds: 3
+              name: httpd-example
+              ports:
+                - containerPort: 8080
+              readinessProbe:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 3
+                timeoutSeconds: 3
+              resources:
+                limits:
+                  memory: 128Mi
+      triggers:
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - httpd-example
+            from:
+              kind: ImageStreamTag
+              name: integrated-hello:latest
+          type: ImageChange
+        - type: ConfigChange

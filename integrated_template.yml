@@ -1,0 +1,115 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    description: Exposes application pods
+  name: integrated-hello
+spec:
+  ports:
+    - name: web
+      port: 8080
+      targetPort: 8080
+  selector:
+    name: integrated-hello
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: integrated-hello
+spec:
+  to:
+    kind: Service
+    name: integrated-hello
+---
+apiVersion: v1
+kind: ImageStream
+metadata:
+  annotations:
+    description: Keeps track of changes in the application image
+  name: integrated-hello
+---
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  annotations:
+    description: Defines how to build the application
+    template.alpha.openshift.io/wait-for-ready: "true"
+  name: integrated-hello
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: integrated-hello:latest
+  source:
+    git:
+      uri: https://github.com/wokkevd/cloud-native-track-integrated-exercise.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: httpd:2.4
+        namespace: test-user07
+    type: Source
+  triggers:
+    - type: ImageChange
+    - type: ConfigChange
+    - github:
+        secret: verySecret
+      type: GitHub
+    - generic:
+        secret: verySecret
+      type: Generic
+---
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    description: Defines how to deploy the application server
+    template.alpha.openshift.io/wait-for-ready: "true"
+  name: integrated-hello
+spec:
+  replicas: 1
+  selector:
+    name: integrated-hello
+  strategy:
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        name: integrated-hello
+      name: integrated-hello
+    spec:
+      containers:
+        - env: []
+          image: integrated-hello:latest
+          livenessProbe:
+            httpGet:
+              path: /hello
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+          name: integrated-hello
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /hello
+              port: 8080
+            initialDelaySeconds: 8
+            timeoutSeconds: 8
+          resources:
+            limits:
+              memory: 128Mi
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - integrated-hello
+        from:
+          kind: ImageStreamTag
+          name: integrated-hello:latest
+          namespace: test-user07
+    - type: ConfigChange

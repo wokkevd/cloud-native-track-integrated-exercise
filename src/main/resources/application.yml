@@ -1,0 +1,3 @@
+secret:
+  background-color: ${INTEGRATED_SECRETS.background-color:kbc-blue}
+  username: ${INTEGRATED_SECRETS.user-name:World}
