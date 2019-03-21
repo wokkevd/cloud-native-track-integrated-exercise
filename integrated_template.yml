@@ -50,7 +50,7 @@ spec:
     sourceStrategy:
       from:
         kind: ImageStreamTag
-        name: httpd:2.4
+        name: integrated-hello:latest
         namespace: test-user07
     type: Source
   triggers:
