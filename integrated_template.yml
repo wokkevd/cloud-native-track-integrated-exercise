@@ -43,6 +43,7 @@ spec:
       name: integrated-hello:latest
   source:
     git:
+      ref: development
       uri: https://github.com/wokkevd/cloud-native-track-integrated-exercise.git
     type: Git
   strategy:
