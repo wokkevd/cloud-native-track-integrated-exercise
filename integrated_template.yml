@@ -47,12 +47,11 @@ spec:
       uri: https://github.com/wokkevd/cloud-native-track-integrated-exercise.git
     type: Git
   strategy:
-    sourceStrategy:
+    type: Docker
+    dockerStrategy:
       from:
         kind: ImageStreamTag
         name: integrated-hello:latest
-        namespace: test-user07
-    type: Source
   triggers:
     - type: ImageChange
     - type: ConfigChange
