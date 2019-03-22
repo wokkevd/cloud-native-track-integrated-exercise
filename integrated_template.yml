@@ -48,10 +48,6 @@ spec:
     type: Git
   strategy:
     type: Docker
-    dockerStrategy:
-      from:
-        kind: ImageStreamTag
-        name: integrated-hello:latest
   triggers:
     - type: ImageChange
     - type: ConfigChange
