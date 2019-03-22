@@ -3,8 +3,8 @@ apiVersion: v1
 metadata:
   name: integrated-secrets
 data:
-  background.color: Z3JlZW4K
-  user.name: V29ybGQK
+  background.color: a2JjLWJsdWU=
+  user.name: V29ybGQ=
 ---
 apiVersion: v1
 kind: Service
