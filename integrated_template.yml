@@ -1,4 +1,11 @@
 ---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: integrated-secrets
+data:
+  background-color: Z3JlZW4K
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -97,7 +104,7 @@ spec:
             timeoutSeconds: 8
           resources:
             limits:
-              memory: 256Mi
+              memory: 512Mi
   triggers:
     - type: ImageChange
       imageChangeParams:
