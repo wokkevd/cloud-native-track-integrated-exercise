@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/hello", produces = "application/json")
 public class HelloController {
 
-    @Value("${secret.background-color}")
+    @Value("${secret.background.color}")
     private String backgroundColor;
 
-    @Value("${secret.username}")
+    @Value("${secret.user.name}")
     private String userName;
 
     @GetMapping
